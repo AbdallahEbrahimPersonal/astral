@@ -25,7 +25,7 @@ export function EventDetails({ event }: EventDetailsProps) {
 
       <ViewTransition name={`event-image-${event.id}`} default={'auto'}>
         <div
-          className='relative w-full aspect-video overflow-hidden bg-cover bg-center'
+          className='relative w-full max-h-[500px] aspect-video overflow-hidden bg-cover bg-center'
           style={{ backgroundImage: `url(${event.imageUrl})` }}
         ></div>
       </ViewTransition>
