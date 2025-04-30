@@ -1,9 +1,8 @@
-const API_URL =
-  `${process.env.VERCEL_URL}/api/v1` || 'http://localhost:3000/api/v1';
+import { env } from './env';
 
 export const api = {
   getEvents: async () => {
-    const response = await fetch(`${API_URL}/events`);
+    const response = await fetch(`${env.apiUrl}/api/v1/events`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch events: ${response.statusText}`);
@@ -12,7 +11,7 @@ export const api = {
     return response.json();
   },
   getEventById: async (eventId: string) => {
-    const response = await fetch(`${API_URL}/events/${eventId}`);
+    const response = await fetch(`${env.apiUrl}/api/v1/events/${eventId}`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch event: ${response.statusText}`);
