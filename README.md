@@ -1,4 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Astral Task
+
+Task submission for Abdallah Ebrahim
+The following application implements a calendar view with events that user can drag and drop them between calendar days
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Architecture](#architecture)
+- [Tech stack](#tech-stack)
 
 ## Getting Started
 
@@ -16,21 +25,96 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+For a scalable and maintainable solution, we followed clean architecture that separates concerns, supports scaling and ensure testability.
 
-## Learn More
+### 1. High level architecture
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── components/
+├── features/
+│   ├── calendar/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── index.tsx
+├── lib/
+├── utils/
+├── types/
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Architecture layers
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### Data Layer
 
-## Deploy on Vercel
+- handles API calls and caching logic
+- using server components to fetch data
+- Using singleton api instance to easily manage api integration
+- handles api layer logs and configurations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Example:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```tsx
+/* page.tsx */
+const getEvents = async (): Promise<EventsByDate> => {
+  return await api.getEvents();
+};
+```
+
+```tsx
+/* lib/api  */
+export const api = {
+  getEvents: async () => {
+    const response = await fetch(`${API_URL}/events`);
+    return response.json();
+  },
+};
+```
+
+#### Domain layer
+
+- Abstract the business logic
+- Handles reuseable utility functions or custom hooks for each domain
+
+Example:
+
+```tsx
+/* features/calendar/use-calendar */
+
+export const useCalendar() {
+  // abstract and handles calendar related business logic
+}
+```
+
+#### Presentation Layer
+
+- Handles UI components, screen and custom ui hooks
+- Follows MVVM pattern where container integrates with data and business layer and responsible for getting/updating ui components
+
+```tsx
+export const Calendar() {
+  const {state, updateSomething} = useCalendar()
+
+  return (
+    <UIComponent state={state} />
+    <AnotherComponent onSomething={updateSomething} />
+  )
+}
+```
+
+#### State management
+
+For the current requirements, there were no much need for a state management solution.
+
+#### Testing
+
+- TBD
+
+## Tech Stack
+
+- React
+- Nextjs
+- TailwindCSS
+- Shadcnui
+- dnd-kit
