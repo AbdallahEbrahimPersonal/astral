@@ -1,8 +1,5 @@
-/**
- * @description API URL
- * should be replaced with env variable
- */
-const API_URL = 'http://localhost:3000/api/v1';
+const API_URL =
+  `${process.env.VERCEL_URL}/api/v1` || 'http://localhost:3000/api/v1';
 
 export const api = {
   getEvents: async () => {
