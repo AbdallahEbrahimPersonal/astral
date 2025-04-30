@@ -16,3 +16,5 @@ export default async function EventPage({
 const getEvent = async (eventId: string) => {
   return await api.getEventById(eventId);
 };
+
+export const dynamic = 'force-dynamic';

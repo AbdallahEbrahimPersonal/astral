@@ -11,3 +11,5 @@ export default async function Home() {
 const getEvents = async (): Promise<EventsByDate> => {
   return await api.getEvents();
 };
+
+export const dynamic = 'force-dynamic';
